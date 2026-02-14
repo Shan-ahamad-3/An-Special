@@ -1,0 +1,153 @@
+/* style.css */
+
+/* 1. Global Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fdf5e6; /* A warm, cream-colored base */
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 2. Main Heading - Center Top */
+.main-heading {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #8b4513; /* Elegant deep bronze/brown */
+    text-align: center;
+    margin-top: 30px;
+    z-index: 30; /* Highest priority */
+    font-family: 'Playfair Display', serif;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 3. The Framed Image Container */
+.frame-container {
+    position: relative;
+    width: 75%; /* Reduced size for more room around */
+    height: 65%;
+    margin-top: 40px;
+    border: 15px solid #ffffff; /* Thick white classic frame */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    background: #000;
+    z-index: 10;
+}
+
+.ken-burns-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 2.5s ease-in-out;
+    z-index: 1;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* 4. Ken Burns Animation */
+.image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    /* Subtle cinematic filter for a moody look */
+    filter: brightness(0.9) contrast(1.1); 
+}
+
+.slide.active .image {
+    animation: kenburns 20s linear infinite;
+}
+
+@keyframes kenburns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    /* Soft vignette for dramatic effect */
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+}
+
+.content {
+    position: absolute;
+    bottom: 8%;
+    left: 5%;
+    color: white;
+    z-index: 3;
+}
+
+.content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.content p {
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* 5. Floating Elements (Balloons & Hearts) */
+.floating-elements {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20; /* Float OVER the frame */
+}
+
+.float-item {
+    position: absolute;
+    bottom: -100px;
+    font-size: 3.5rem; /* Large and visible */
+    opacity: 0;
+    animation: floatUp 12s linear infinite;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); /* Makes them pop */
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1; /* Fade in quickly */
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0; /* Fade out at the top */
+    }
+}
+
+/* 6. Color Randomization via Pseudo-classes */
+.float-item:nth-child(1) { color: #ff4d4d; left: 5%;  animation-duration: 10s; }
+.float-item:nth-child(2) { color: #ffd700; left: 15%; animation-duration: 14s; animation-delay: 2s; }
+.float-item:nth-child(3) { color: #ff69b4; left: 25%; animation-duration: 11s; animation-delay: 5s; }
+.float-item:nth-child(4) { color: #ff4500; left: 75%; animation-duration: 13s; animation-delay: 1s; }
+.float-item:nth-child(5) { color: #ff69b4;    left: 85%; animation-duration: 15s; animation-delay: 4s; }
+.float-item:nth-child(6) { color: #ff1493; left: 92%; animation-duration: 12s; animation-delay: 7s; }
