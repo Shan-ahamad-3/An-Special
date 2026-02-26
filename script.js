@@ -1,10 +1,14 @@
+// ====== ELEMENTS ======
 const slides = document.querySelectorAll('.slide');
 const music = document.getElementById('bgMusic');
-let currentIndex = 0;
-const slideInterval = 7000; // Changes photo every 7 seconds
 
-// 1. Photo Slider Logic
+// ====== SLIDER CONFIG ======
+let currentIndex = 0;
+const slideInterval = 7000; // 7 seconds
+
 function nextSlide() {
+    if (!slides.length) return;
+
     slides[currentIndex].classList.remove('active');
     currentIndex = (currentIndex + 1) % slides.length;
     slides[currentIndex].classList.add('active');
@@ -12,17 +16,37 @@ function nextSlide() {
 
 setInterval(nextSlide, slideInterval);
 
-// 2. Music Autoplay Logic
-function startMusic() {
-    music.play().catch(() => {
-        console.log("Waiting for user interaction to play music...");
-    });
+
+// ====== MUSIC START ON FIRST HUMAN ACTION ======
+
+function startMusicOnce() {
+    if (!music) return;
+
+    const playPromise = music.play();
+
+    // Prevent uncaught errors in strict browsers
+    if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+    }
+
+    removeInteractionListeners();
 }
 
-// Try playing on load
-window.addEventListener('load', startMusic);
+function removeInteractionListeners() {
+    interactionEvents.forEach(event =>
+        document.removeEventListener(event, startMusicOnce)
+    );
+}
 
-// Fallback: Start music on the first click anywhere on the page
-document.addEventListener('click', () => {
-    startMusic();
-}, { once: true });
+// Events that count as "the user is alive"
+const interactionEvents = [
+    'click',
+    'scroll',
+    'keydown',
+    'touchstart',
+    'pointerdown'
+];
+
+interactionEvents.forEach(event =>
+    document.addEventListener(event, startMusicOnce, { once: true })
+);
